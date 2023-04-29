@@ -1,22 +1,19 @@
-from flask import Flask
-from flask import render_template
-#import email
-import os
-import time 
-#import smtplib, ssl
-from email.message import * 
-from flask import request
-
-# input feilds user_name ; pass_word
-
-em = EmailMessage()
+from flask import *
 app = Flask(__name__)
- 
- # fg
+
 @app.route("/")
 def index():
-    return  render_template("html/login.html") 
+    return render_template("html/login.html")
 
+@app.route("/login", methods=["POST"])
+def login():
+    user_name = request.form.get("user_name")
+    pass_word = request.form.get("pass_word")
+    print(user_name)
+    if user_name == "admin" and pass_word == "admin":
+        return render_template("html/home.html")
+    else:
+        return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=4000,debug=True)
+    app.run(debug=True)
